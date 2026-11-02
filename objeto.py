@@ -99,4 +99,122 @@ class Cliente:
             conn.close()
 
 class Endereco:
-    pass
+    def __init__(self,id:int,endereco:str,numero:str,complemento:str,bairro:str,cep:str,idCliente:int):
+        self.id=id
+        self.endereco=endereco
+        self.numero=numero
+        self.complemento=complemento
+        self.bairro=bairro
+        self.cep=cep
+        self.idCliente=idCliente
+
+    def create(endereco:str,numero:str,complemento:str,bairro:str,cep:str,idCliente:int)->str:
+        ("Utilizado para adcionar os dados do endereço e vincular a um cliente pela ID do cliente")
+
+        #Abre a conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta inserir os valores no banco de dados e retorna informação que o Endereco foi cadastrado
+        try:
+            cursor.execute("INSERT INTO Endereco (endereco,numero,complemento,bairro,cep,idCliente) VALUES (?, ?, ?, ?, ?, ?)", (endereco,numero,complemento,bairro,cep,idCliente))
+            conn.commit()
+            return f"Endereco foi cadastrado com sucesso"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao adicionar Endereco \nErro: {e}"
+
+        #Finaliza com o fechamento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def read(id:str)->object:
+        ("Usando a ID de um cliente irá retornar os dados de endereco do cliente como Objeto 'endreco_dados' ")
+
+        #Conecta ao banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta ler os dados do Endereco no banco de dados usando a ID fornecida, e retorna os dados como obejto 'endereco_dados'
+        try:
+            cursor.execute("SELECT idEndereco,endereco,numero,complemento,bairro,cep FROM endereco WHERE idCliente=?", (str(id)))
+            dados=cursor.fetchone()
+            endereco_dados=Endereco(dados[0],dados[1],dados[2],dados[3],dados[4],dados[5],id)
+            return endereco_dados
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao selecionar no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def update(endereco:str,numero:str,complemento:str,bairro:str,cep:str,idCliente:int):
+        ("Usado para atualizar um Endereco no banco de dados.\n\n"
+        "Selecione a ID do cliente que será atualizado.\n\n"
+        'Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados\n\n'
+        'EX: Cliente.update( "", "" , "" , "Municipal" , "66.000-000", 4)\n\n'
+        'No exemplo apenas os campos de Bairro e de cep serão alterados no endereço do cliente com ID=4')
+
+        #Busca as informações atuais do Endereco no banco de dados e salva como objeto temp
+        temp=Endereco.read(idCliente)
+
+        #Faz as alterações no Obejto temp se os campos não estiverem vazios na função
+        #Se os campos estiverem "" não haverá mudanças e os valores permaneceram o mesmo de quando recuperados
+        # pelo banco d dados
+        if endereco!="":
+            temp.endereco=endereco
+        if numero!="":
+            temp.numero=numero
+        if complemento!="":
+            temp.complemento=complemento
+        if bairro!="":
+            temp.bairro=bairro
+        if cep!="":
+            temp.cep=cep
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
+        # retornando a informação se foi bem sucedido
+        try:
+            cursor.execute("UPDATE Endereco SET endereco=?, numero=?, complemento=?, bairro=?, cep=? WHERE idCliente=?", (temp.endereco,temp.numero,temp.complemento,temp.bairro,temp.cep,idCliente))
+            conn.commit()
+            return f"Endereco Atualizado com sucesso"
+        
+        # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao atualizar Endereco no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def delete(id: int) -> str:
+        """Utilizado para deletar do banco de dados os dados do Endereco usado ID do cliente selecionado"""
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta deletar as informação do endereco do cliente com a ID fornecida e retornando str de sucesso
+        try:
+            cursor.execute("DELETE FROM Endereco WHERE idCliente=?", (str(id)))
+            conn.commit()
+            return f"Endereço do cliente: {id} foi deletado com sucesso"
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao Deletar\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
+        finally:
+            conn.close()
