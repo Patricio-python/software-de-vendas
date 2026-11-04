@@ -336,3 +336,117 @@ class Funcionario:
         #Finaliza com o encerramento da conexão com o banco de dadosa
         finally:
             conn.close()
+class Servicos:
+    def __init__(self,id:int,tipo:str,descricao:str,valor:float):
+        self.id=id
+        self.tipo=tipo
+        self.descricao=descricao
+        self.valor=valor
+
+    def create(tipo:str,descricao:str,valor:float)->str:
+        ("Utilizado para adcionar os dados dos Servicos ao banco de dados")
+
+        #Abre a conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta inserir os valores no banco de dados e retorna informação que o Servico foi cadastrado
+        try:
+            cursor.execute("INSERT INTO Servicos (tipo,descricao,valor) VALUES (?, ?, ?)", (tipo,descricao,valor))
+            conn.commit()
+            return f"Servico {tipo} foi cadastrado com sucesso"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao adicionar Endereco \nErro: {e}"
+
+        #Finaliza com o fechamento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def read(id:str)->object:
+        ("Usando a ID de um Servico irá retornar os dados do servico como Objeto ")
+
+        #Conecta ao banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta ler os dados do Servico no banco de dados usando a ID fornecida, e retorna os dados como obejto
+        try:
+            cursor.execute("SELECT tipo,descricao,valor FROM Servicos WHERE idServicos=?", (str(id)))
+            dados=cursor.fetchone()
+            servico_dados=Servicos(id,dados[0],dados[1],dados[2])
+            return servico_dados
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao selecionar no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def update(id:int,tipo:str,descricao:str,valor:str):
+        ("Usado para atualizar um Servico no banco de dados.\n\n"
+        "Selecione a ID do servico que será atualizado.\n\n"
+        'Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados\n\n'
+        'EX: Servicos.update( "Reparo", "" , "45.21" , 5)\n\n'
+        'No exemplo apenas os campos de Tipo e Valor serão alterados no Servico de ID 5 ')
+
+        #Busca as informações atuais do Servico no banco de dados e salva como objeto temp
+        temp=Servicos.read(id)
+
+        #Faz as alterações no Obejto temp se os campos não estiverem vazios na função
+        #Se os campos estiverem "" não haverá mudanças e os valores permaneceram o mesmo de quando recuperados
+        # pelo banco d dados
+        if tipo!="":
+            temp.tipo=tipo
+        if descricao!="":
+            temp.descricao=descricao
+        if valor!="":
+            temp.valor=valor
+        
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
+        # retornando a informação se foi bem sucedido
+        try:
+            cursor.execute("UPDATE Servicos SET tipo=?, descricao=?, valor=? WHERE idServicos=?", (temp.tipo,temp.descricao,temp.valor,id))
+            conn.commit()
+            return f"Servico Atualizado com sucesso"
+        
+        # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao atualizar Servico no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def delete(id: int) -> str:
+        """Utilizado para deletar do banco de dados os dados do Endereco usado ID do cliente selecionado"""
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta deletar as informação do Servico com a ID fornecida e retornando str de sucesso
+        try:
+            cursor.execute("DELETE FROM Servicos WHERE idServicos=?", (str(id)))
+            conn.commit()
+            return f"Servico {id}: foi deletado com sucesso"
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao Deletar\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
+        finally:
+            conn.close()
