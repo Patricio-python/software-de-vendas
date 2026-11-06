@@ -1,13 +1,16 @@
 import sqlite3
 
-conn = sqlite3.connect('database.db')
-cursor = conn.cursor()
-
 def create():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()    
+
     try:
+        # Ativa o suporte a chaves estrangeiras no SQLite
+        cursor.execute("PRAGMA foreign_keys = ON;")
+
         # 1. Tabela Cliente
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS cliente (
+            CREATE TABLE IF NOT EXISTS Cliente (
                 idCliente INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 sobrenome TEXT NOT NULL,
@@ -18,27 +21,13 @@ def create():
 
         # Inserir o dado padrão (Visitante)
         cursor.execute('''
-            INSERT OR IGNORE INTO cliente (idCliente, nome, sobrenome, cpf, telefone) 
+            INSERT OR IGNORE INTO Cliente (idCliente, nome, sobrenome, cpf, telefone) 
             VALUES (1, 'Visitante', 'Visitante', '000.000.000-00', '(91)9XXX-XXXX');
         ''')
 
-        # 2. Tabela Endereco
+        # 2. Tabela Funcionario
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS endereco (
-                idEndereco INTEGER PRIMARY KEY AUTOINCREMENT,
-                endereco TEXT NOT NULL,
-                numero TEXT NOT NULL,
-                complemento TEXT,
-                bairro TEXT NOT NULL,
-                cep TEXT NOT NULL,
-                idCliente INTEGER NOT NULL,
-                FOREIGN KEY (idCliente) REFERENCES cliente (idCliente) ON DELETE CASCADE
-            );
-        ''')
-
-        # 3. Tabela Funcionario
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS funcionario (
+            CREATE TABLE IF NOT EXISTS Funcionario (
                 idFuncionario INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 funcao TEXT NOT NULL,
@@ -47,49 +36,105 @@ def create():
             );
         ''')
 
-        # 4. Tabela Servicos
+        # Inserir o dado padrão (Funcionario Admin)
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS servicos (
-                idServicos INTEGER PRIMARY KEY AUTOINCREMENT,
-                Tipo TEXT NOT NULL,
-                Descricao TEXT NOT NULL,
-                Valor REAL NOT NULL
+            INSERT OR IGNORE INTO Funcionario (idFuncionario, nome, funcao, login, senha) 
+            VALUES (1, 'Admin', 'Administrador', 'Admin', '123456');
+        ''')        
+
+        # 3. Tabela Carrinho
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Carrinho (
+                idCarrinho INTEGER PRIMARY KEY AUTOINCREMENT,
+                idCliente INTEGER NOT NULL,
+                total REAL NOT NULL DEFAULT 0.00,
+                status INTEGER NOT NULL DEFAULT 0,
+                FOREIGN KEY (idCliente) REFERENCES Cliente (idCliente) ON DELETE NO ACTION ON UPDATE NO ACTION
             );
         ''')
 
-        # 5. Tabela Venda
+        # 4. Tabela Venda
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS venda (
+            CREATE TABLE IF NOT EXISTS Venda (
                 idVenda INTEGER PRIMARY KEY AUTOINCREMENT,
                 data TEXT NOT NULL,
-                idCliente INTEGER NOT NULL,
                 idFuncionario INTEGER NOT NULL,
-                FOREIGN KEY (idCliente) REFERENCES cliente (idCliente),
-                FOREIGN KEY (idFuncionario) REFERENCES funcionario (idFuncionario)
+                idCarrinho INTEGER NOT NULL,
+                FOREIGN KEY (idFuncionario) REFERENCES Funcionario (idFuncionario) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                FOREIGN KEY (idCarrinho) REFERENCES Carrinho (idCarrinho) ON DELETE NO ACTION ON UPDATE NO ACTION
             );
         ''')
 
-        # 6. Tabela Carrinho (Tabela N:M entre Servicos e Venda)
+        # 5. Tabela Endereco
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS carrinho (
-                idServicos INTEGER NOT NULL,
-                idVenda INTEGER NOT NULL,
-                quantidade INTEGER NOT NULL,
-                PRIMARY KEY (idServicos, idVenda),
-                FOREIGN KEY (idServicos) REFERENCES servicos (idServicos),
-                FOREIGN KEY (idVenda) REFERENCES venda (idVenda) ON DELETE CASCADE
+            CREATE TABLE IF NOT EXISTS Endereco (
+                idEndereco INTEGER PRIMARY KEY AUTOINCREMENT,
+                endereco TEXT NOT NULL,
+                numero TEXT NOT NULL,
+                complemento TEXT,
+                bairro TEXT NOT NULL,
+                cep TEXT NOT NULL,
+                idCliente INTEGER NOT NULL,
+                FOREIGN KEY (idCliente) REFERENCES Cliente (idCliente) ON DELETE NO ACTION ON UPDATE NO ACTION
             );
         ''')
 
-        # Índices adicionais para otimização de buscas (conforme mapeado no dump)
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Endereco_Cliente1_idx ON endereco (idCliente);')
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Pedido_Cliente1_idx ON venda (idCliente);')
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Pedido_Funcionario1_idx ON venda (idFuncionario);')
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Servicos_has_Venda_Venda1_idx ON carrinho (idVenda);')
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Servicos_has_Venda_Servicos1_idx ON carrinho (idServicos);')
+        # 6. Tabela Servicos
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Servicos (
+                idServicos INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                descricao TEXT NOT NULL,
+                valor REAL NOT NULL
+            );
+        ''')
+
+        # 7. Tabela Servico_Carrinho (Relacionamento N:M)
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Servico_Carrinho (
+                idCarrinho INTEGER NOT NULL,
+                idServicos INTEGER NOT NULL,
+                quantidade INTEGER NOT NULL,
+                PRIMARY KEY (idCarrinho, idServicos),
+                FOREIGN KEY (idCarrinho) REFERENCES Carrinho (idCarrinho) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                FOREIGN KEY (idServicos) REFERENCES Servicos (idServicos) ON DELETE NO ACTION ON UPDATE NO ACTION
+            );
+        ''')
+
+        # 8. Tabela Produtos
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Produtos (
+                idProdutos INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                descricao TEXT NOT NULL,
+                valor REAL NOT NULL
+            );
+        ''')
+
+        # 9. Tabela Produto_Carrinho (Relacionamento N:M)
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Produto_Carrinho (
+                idCarrinho INTEGER NOT NULL,
+                idProdutos INTEGER NOT NULL,
+                quantidade INTEGER NOT NULL,
+                PRIMARY KEY (idCarrinho, idProdutos),
+                FOREIGN KEY (idCarrinho) REFERENCES Carrinho (idCarrinho) ON DELETE NO ACTION ON UPDATE NO ACTION,
+                FOREIGN KEY (idProdutos) REFERENCES Produtos (idProdutos) ON DELETE NO ACTION ON UPDATE NO ACTION
+            );
+        ''')
+
+        # Índices para otimização de buscas (conforme mapeado no dump do MySQL)
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_Cliente1_idx ON Carrinho (idCliente);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Pedido_Funcionario1_idx ON Venda (idFuncionario);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Venda_Carrinho1_idx ON Venda (idCarrinho);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Endereco_Cliente1_idx ON Endereco (idCliente);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Servicos_Servicos1_idx ON Servico_Carrinho (idServicos);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Servicos_Carrinho1_idx ON Servico_Carrinho (idCarrinho);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produtos_Produtos1_idx ON Produto_Carrinho (idProdutos);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produtos_Carrinho1_idx ON Produto_Carrinho (idCarrinho);')
 
         conn.commit()
-        print(f"Banco de dados físico criado com sucesso!")
+        print("Banco de dados físico 'database.db' criado com sucesso no SQLite!")
 
     except sqlite3.Error as e:
         print(f"Erro ao criar o banco de dados: {e}")
