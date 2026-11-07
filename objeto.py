@@ -567,3 +567,115 @@ class Produtos:
         finally:
             conn.close()
 
+class Carrinho:
+    def __init__(self,id:int,idCliente:int,total:float,status:bool):
+        self.id=id
+        self.idCliente=idCliente
+        self.total=total
+        self.status=status
+
+    def create(idCliente:int)->str:
+        ("Utilizado para criar um carro e vincular a um cliente pela ID do cliente")
+
+        #Abre a conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta inserir a ID no banco de dados e retorna informação que o Carrinho foi cadastrado
+        try:
+            cursor.execute("INSERT INTO Carrinho (idCliente) VALUES (?)", (idCliente,))
+            conn.commit()
+            return f"Carrinho Criado com sucesso"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao Criar Carrinho \nErro: {e}"
+
+        #Finaliza com o fechamento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def read(id:str)->object:
+        ("Usando a ID irá retornar os dados de Carrinho como Objeto 'carrinho_dados' ")
+
+        #Conecta ao banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta ler os dados do Endereco no banco de dados usando a ID fornecida, e retorna os dados como obejto 'endereco_dados'
+        try:
+            cursor.execute("SELECT idCarrinho,idCliente,total,status FROM carrinho WHERE idCarrinho=?", (str(id)))
+            dados=cursor.fetchone()
+            carrinho_dados=Carrinho(dados[0],dados[1],dados[2],dados[3])
+            return carrinho_dados
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao selecionar no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def update(id:int,idCliente:int,status:bool):
+        ("Usado para atualizar um Carrinho no banco de dados.\n\n"
+        "Selecione a ID do carrinho que será atualizado.\n\n"
+        'Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados\n\n'
+        'EX: Carrinho.update(2, "", 1)\n\n'
+        'No exemplo apenas o campo de Status será alterado para TRUE no Carrinho com ID=2'
+        "Atributo 'Total' Não é modificado pq ele possui gatilhos de alteração")
+
+        #Busca as informações atuais do Carrinho no banco de dados e salva como objeto temp
+        temp=Carrinho.read(id)
+
+        #Faz as alterações no Obejto temp se os campos não estiverem vazios na função
+        #Se os campos estiverem "" não haverá mudanças e os valores permaneceram o mesmo de quando recuperados
+        # pelo banco d dados
+        if idCliente!="":
+            temp.idCliente=idCliente
+        if status!="":
+            temp.status=status
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
+        # retornando a informação se foi bem sucedido
+        try:
+            cursor.execute("UPDATE Carrinho SET idCliente=?, status=? WHERE idCarrinho=?", (temp.idCliente,temp.status,id))
+            conn.commit()
+            return f"Carrinho atualizado com sucesso"
+        
+        # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao atualizar Endereco no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def delete(id: int) -> str:
+        """Utilizado para deletar do banco de dados os dados do Carrinho usando ID selecionada"""
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta deletar as informação do carrinho com a ID fornecida e retornando str de sucesso
+        try:
+            cursor.execute("DELETE FROM Carrinho WHERE idCarrinho=?", (str(id)))
+            conn.commit()
+            return f"Carrinho {id} : foi deletado com sucesso"
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao Deletar Carrinho {id} \nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
+        finally:
+            conn.close()
