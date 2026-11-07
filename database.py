@@ -123,7 +123,7 @@ def create():
             );
         ''')
 
-        # Índices para otimização de buscas (conforme mapeado no dump do MySQL)
+        # 10. Índices para otimização de buscas (conforme mapeado no dump do MySQL)
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_Cliente1_idx ON Carrinho (idCliente);')
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Pedido_Funcionario1_idx ON Venda (idFuncionario);')
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Venda_Carrinho1_idx ON Venda (idCarrinho);')
@@ -132,6 +132,123 @@ def create():
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Servicos_Carrinho1_idx ON Servico_Carrinho (idCarrinho);')
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produtos_Produtos1_idx ON Produto_Carrinho (idProdutos);')
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produtos_Carrinho1_idx ON Produto_Carrinho (idCarrinho);')
+
+        # 11. Triggers para automação do campo 'total' (Produtos + Serviços)
+        cursor.executescript('''
+            -- ==========================================
+            -- TRIGGERS PARA PRODUTO_CARRINHO
+            -- ==========================================
+            CREATE TRIGGER IF NOT EXISTS trg_produto_total_insert
+            AFTER INSERT ON Produto_Carrinho
+            BEGIN
+                UPDATE Carrinho
+                SET total = COALESCE((
+                    SELECT SUM(pc.quantidade * p.valor)
+                    FROM Produto_Carrinho pc
+                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    WHERE pc.idCarrinho = NEW.idCarrinho
+                ), 0.00) + COALESCE((
+                    SELECT SUM(sc.quantidade * s.valor)
+                    FROM Servico_Carrinho sc
+                    JOIN Servicos s ON sc.idServicos = s.idServicos
+                    WHERE sc.idCarrinho = NEW.idCarrinho
+                ), 0.00)
+                WHERE idCarrinho = NEW.idCarrinho;
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS trg_produto_total_update
+            AFTER UPDATE OF quantidade, idProdutos ON Produto_Carrinho
+            BEGIN
+                UPDATE Carrinho
+                SET total = COALESCE((
+                    SELECT SUM(pc.quantidade * p.valor)
+                    FROM Produto_Carrinho pc
+                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    WHERE pc.idCarrinho = NEW.idCarrinho
+                ), 0.00) + COALESCE((
+                    SELECT SUM(sc.quantidade * s.valor)
+                    FROM Servico_Carrinho sc
+                    JOIN Servicos s ON sc.idServicos = s.idServicos
+                    WHERE sc.idCarrinho = NEW.idCarrinho
+                ), 0.00)
+                WHERE idCarrinho = NEW.idCarrinho;
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS trg_produto_total_delete
+            AFTER DELETE ON Produto_Carrinho
+            BEGIN
+                UPDATE Carrinho
+                SET total = COALESCE((
+                    SELECT SUM(pc.quantidade * p.valor)
+                    FROM Produto_Carrinho pc
+                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    WHERE pc.idCarrinho = OLD.idCarrinho
+                ), 0.00) + COALESCE((
+                    SELECT SUM(sc.quantidade * s.valor)
+                    FROM Servico_Carrinho sc
+                    JOIN Servicos s ON sc.idServicos = s.idServicos
+                    WHERE sc.idCarrinho = OLD.idCarrinho
+                ), 0.00)
+                WHERE idCarrinho = OLD.idCarrinho;
+            END;
+
+            -- ==========================================
+            -- TRIGGERS PARA SERVICO_CARRINHO
+            -- ==========================================
+            CREATE TRIGGER IF NOT EXISTS trg_servico_total_insert
+            AFTER INSERT ON Servico_Carrinho
+            BEGIN
+                UPDATE Carrinho
+                SET total = COALESCE((
+                    SELECT SUM(pc.quantidade * p.valor)
+                    FROM Produto_Carrinho pc
+                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    WHERE pc.idCarrinho = NEW.idCarrinho
+                ), 0.00) + COALESCE((
+                    SELECT SUM(sc.quantidade * s.valor)
+                    FROM Servico_Carrinho sc
+                    JOIN Servicos s ON sc.idServicos = s.idServicos
+                    WHERE sc.idCarrinho = NEW.idCarrinho
+                ), 0.00)
+                WHERE idCarrinho = NEW.idCarrinho;
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS trg_servico_total_update
+            AFTER UPDATE OF quantidade, idServicos ON Servico_Carrinho
+            BEGIN
+                UPDATE Carrinho
+                SET total = COALESCE((
+                    SELECT SUM(pc.quantidade * p.valor)
+                    FROM Produto_Carrinho pc
+                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    WHERE pc.idCarrinho = NEW.idCarrinho
+                ), 0.00) + COALESCE((
+                    SELECT SUM(sc.quantidade * s.valor)
+                    FROM Servico_Carrinho sc
+                    JOIN Servicos s ON sc.idServicos = s.idServicos
+                    WHERE sc.idCarrinho = NEW.idCarrinho
+                ), 0.00)
+                WHERE idCarrinho = NEW.idCarrinho;
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS trg_servico_total_delete
+            AFTER DELETE ON Servico_Carrinho
+            BEGIN
+                UPDATE Carrinho
+                SET total = COALESCE((
+                    SELECT SUM(pc.quantidade * p.valor)
+                    FROM Produto_Carrinho pc
+                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    WHERE pc.idCarrinho = OLD.idCarrinho
+                ), 0.00) + COALESCE((
+                    SELECT SUM(sc.quantidade * s.valor)
+                    FROM Servico_Carrinho sc
+                    JOIN Servicos s ON sc.idServicos = s.idServicos
+                    WHERE sc.idCarrinho = OLD.idCarrinho
+                ), 0.00)
+                WHERE idCarrinho = OLD.idCarrinho;
+            END;
+        ''')
 
         conn.commit()
         print("Banco de dados físico 'database.db' criado com sucesso no SQLite!")
