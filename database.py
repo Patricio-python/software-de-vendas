@@ -1,7 +1,10 @@
 import sqlite3
+import os
+
+db_filename = "database.db"  
 
 def create():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect("database.db")
     cursor = conn.cursor()    
 
     try:
@@ -101,10 +104,10 @@ def create():
             );
         ''')
 
-        # 8. Tabela Produtos
+        # 8. Tabela Produto
         cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Produtos (
-                idProdutos INTEGER PRIMARY KEY AUTOINCREMENT,
+            CREATE TABLE IF NOT EXISTS Produto (
+                idProduto INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 descricao TEXT NOT NULL,
                 valor REAL NOT NULL
@@ -115,11 +118,11 @@ def create():
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS Produto_Carrinho (
                 idCarrinho INTEGER NOT NULL,
-                idProdutos INTEGER NOT NULL,
+                idProduto INTEGER NOT NULL,
                 quantidade INTEGER NOT NULL,
-                PRIMARY KEY (idCarrinho, idProdutos),
+                PRIMARY KEY (idCarrinho, idProduto),
                 FOREIGN KEY (idCarrinho) REFERENCES Carrinho (idCarrinho) ON DELETE NO ACTION ON UPDATE NO ACTION,
-                FOREIGN KEY (idProdutos) REFERENCES Produtos (idProdutos) ON DELETE NO ACTION ON UPDATE NO ACTION
+                FOREIGN KEY (idProduto) REFERENCES Produto (idProduto) ON DELETE NO ACTION ON UPDATE NO ACTION
             );
         ''')
 
@@ -130,10 +133,10 @@ def create():
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Endereco_Cliente1_idx ON Endereco (idCliente);')
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Servicos_Servicos1_idx ON Servico_Carrinho (idServicos);')
         cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Servicos_Carrinho1_idx ON Servico_Carrinho (idCarrinho);')
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produtos_Produtos1_idx ON Produto_Carrinho (idProdutos);')
-        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produtos_Carrinho1_idx ON Produto_Carrinho (idCarrinho);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produto_Produto1_idx ON Produto_Carrinho (idProduto);')
+        cursor.execute('CREATE INDEX IF NOT EXISTS fk_Carrinho_has_Produto_Carrinho1_idx ON Produto_Carrinho (idCarrinho);')
 
-        # 11. Triggers para automação do campo 'total' (Produtos + Serviços)
+        # 11. Triggers para automação do campo 'total' (Produto + Serviços)
         cursor.executescript('''
             -- ==========================================
             -- TRIGGERS PARA PRODUTO_CARRINHO
@@ -145,7 +148,7 @@ def create():
                 SET total = COALESCE((
                     SELECT SUM(pc.quantidade * p.valor)
                     FROM Produto_Carrinho pc
-                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    JOIN Produto p ON pc.idProduto = p.idProduto
                     WHERE pc.idCarrinho = NEW.idCarrinho
                 ), 0.00) + COALESCE((
                     SELECT SUM(sc.quantidade * s.valor)
@@ -157,13 +160,13 @@ def create():
             END;
 
             CREATE TRIGGER IF NOT EXISTS trg_produto_total_update
-            AFTER UPDATE OF quantidade, idProdutos ON Produto_Carrinho
+            AFTER UPDATE OF quantidade, idProduto ON Produto_Carrinho
             BEGIN
                 UPDATE Carrinho
                 SET total = COALESCE((
                     SELECT SUM(pc.quantidade * p.valor)
                     FROM Produto_Carrinho pc
-                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    JOIN Produto p ON pc.idProduto = p.idProduto
                     WHERE pc.idCarrinho = NEW.idCarrinho
                 ), 0.00) + COALESCE((
                     SELECT SUM(sc.quantidade * s.valor)
@@ -181,7 +184,7 @@ def create():
                 SET total = COALESCE((
                     SELECT SUM(pc.quantidade * p.valor)
                     FROM Produto_Carrinho pc
-                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    JOIN Produto p ON pc.idProduto = p.idProduto
                     WHERE pc.idCarrinho = OLD.idCarrinho
                 ), 0.00) + COALESCE((
                     SELECT SUM(sc.quantidade * s.valor)
@@ -202,7 +205,7 @@ def create():
                 SET total = COALESCE((
                     SELECT SUM(pc.quantidade * p.valor)
                     FROM Produto_Carrinho pc
-                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    JOIN Produto p ON pc.idProduto = p.idProduto
                     WHERE pc.idCarrinho = NEW.idCarrinho
                 ), 0.00) + COALESCE((
                     SELECT SUM(sc.quantidade * s.valor)
@@ -220,7 +223,7 @@ def create():
                 SET total = COALESCE((
                     SELECT SUM(pc.quantidade * p.valor)
                     FROM Produto_Carrinho pc
-                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    JOIN Produto p ON pc.idProduto = p.idProduto
                     WHERE pc.idCarrinho = NEW.idCarrinho
                 ), 0.00) + COALESCE((
                     SELECT SUM(sc.quantidade * s.valor)
@@ -238,7 +241,7 @@ def create():
                 SET total = COALESCE((
                     SELECT SUM(pc.quantidade * p.valor)
                     FROM Produto_Carrinho pc
-                    JOIN Produtos p ON pc.idProdutos = p.idProdutos
+                    JOIN Produto p ON pc.idProduto = p.idProduto
                     WHERE pc.idCarrinho = OLD.idCarrinho
                 ), 0.00) + COALESCE((
                     SELECT SUM(sc.quantidade * s.valor)
