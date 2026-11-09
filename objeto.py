@@ -9,52 +9,64 @@ class Cliente:
         self.telefone=telefone
 
     def create(nome:str,sobrenome:str,cpf:str,telefone:str)->str:
-        "Utilizado para adcionar os dados de nome, sobrenome, cpf e telefone de um cliente ao banco de dados"
-        
+        ("Utilizado para adcionar os dados de nome, sobrenome, cpf e telefone de um cliente ao "
+        "banco de dados")
+
+        #Abre a conexão com o banco de dados
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
-        
+
+        #Tenta inserir os valores no banco de dados e retorna informação que cliente foi cadastrado
         try:
             cursor.execute("INSERT INTO Cliente (nome,sobrenome,cpf,telefone) VALUES (?, ?, ?, ?)", (nome,sobrenome,cpf,telefone))
             conn.commit()
-            return f"Cliente Cadastrado {nome} com sucesso"
-        
+            return f"Cliente {nome} foi cadastrado com sucesso"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
         except Exception as e:
             conn.rollback()
             return f"Erro ao adicionar\nErro: {e}"
 
+        #Finaliza com o fechamento da conexão com o banco de dados
         finally:
             conn.close()
 
     def read(id:int)->object:
-        """Utilize a ID de um cliente para retornar os dados desse cliente"""
+        ("Usando a ID de um cliente irá retornar os dados desse cliente como Objeto 'clt_dados' ")
 
+        #Conecta ao banco de dados
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
+        #Tenta ler os dados do cliente no banco de dados usando a ID fornecida, e retorna os dados como obejto 'clt_dados'
         try:
             cursor.execute("SELECT idCliente,nome,sobrenome,cpf,telefone FROM Cliente WHERE idCliente=?", (str(id)))
             dados=cursor.fetchone()
-            dados=Cliente(dados[0],dados[1],dados[2],dados[3],dados[4])
-            return dados
-                
+            clt_dados=Cliente(dados[0],dados[1],dados[2],dados[3],dados[4])
+            return clt_dados
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
         except Exception as e:
                 conn.rollback()
                 return f"Erro ao selecionar no banco de dados\nErro: {e}"
-        
+
+        #Finaliza com o encerramento da conexão com o banco de dados
         finally:
             conn.close()
 
     def update(id:int,nome:str,sobrenome:str,cpf:str,telefone:str):
-        """Usado para atualizar um Cliente no banco de dados.\n
-        Selecione a ID do cliente que será atualizado.\n
-        Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados"""
+        ("Usado para atualizar um Cliente no banco de dados.\n\n"
+        "Selecione a ID do cliente que será atualizado.\n\n"
+        'Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados\n\n'
+        'EX: Cliente.update( 4, "" , "" , 969.858.747-31 , (99)98080-6060)\n\n'
+        'No exemplo apenas os campos de cpf e de telefone serão alterados no cliente com ID=4')
 
+        #Busca as informações atuais do cliente no banco de dados e salva como objeto temp
         temp=Cliente.read(id)
 
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-
+        #Faz as alterações no Obejto temp se os campos não estiverem vazios na função
+        #Se os campos estiverem "" não haverá mudanças e os valores permaneceram o mesmo de quando recuperados
+        # pelo banco d dados
         if nome!="":
             temp.nome=nome
         if sobrenome!="":
@@ -64,37 +76,44 @@ class Cliente:
         if telefone!="":
             temp.telefone=telefone
         
-        
+        #Inicia conexão com o banco de dados
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
+        #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
+        # retornando a informação de que foi bem sucedido
         try:
             cursor.execute("UPDATE Cliente SET nome=?, sobrenome=?, cpf=?, telefone=? WHERE idCliente=?", (temp.nome,temp.sobrenome,temp.cpf,temp.telefone,id))
             conn.commit()
             return f"Cliente {temp.nome} Atualizado com sucesso"
-                
+        # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
         except Exception as e:
             conn.rollback()
             return f"Erro ao Atualizar no banco de dados\nErro: {e}"
-        
+
+        #Finaliza com o encerramento da conexão com o banco de dados
         finally:
             conn.close()
 
     def delete(id: int) -> str:
         """Utilizado para deletar do banco de dados os dados do cliente com a ID selecionada"""
 
+        #Inicia conexão com o banco de dados
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
+        #Tenta deletar as informação do cliente com a ID fornecida e retornando str de sucesso
         try:
             cursor.execute("DELETE FROM Cliente WHERE idCliente=?", (str(id)))
             conn.commit()
             return f"Cliente com o ID: {id} deletado com sucesso"
-                
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
         except Exception as e:
                 conn.rollback()
                 return f"Erro ao Deletar\nErro: {e}"
-        
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
         finally:
             conn.close()
 
@@ -266,7 +285,7 @@ class Funcionario:
         #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
         except Exception as e:
                 conn.rollback()
-                return f"Erro ao selecionar no banco de dados\nErro: {e}"
+                return f"Erro ao selecionar Funcionario no banco de dados\nErro: {e}"
 
         #Finaliza com o encerramento da conexão com o banco de dados
         finally:
@@ -336,15 +355,15 @@ class Funcionario:
         #Finaliza com o encerramento da conexão com o banco de dadosa
         finally:
             conn.close()
-            
+
 class Servicos:
-    def __init__(self,id:int,tipo:str,descricao:str,valor:float):
+    def __init__(self,id:int,nome:str,descricao:str,valor:float):
         self.id=id
-        self.tipo=tipo
+        self.nome=nome
         self.descricao=descricao
         self.valor=valor
 
-    def create(tipo:str,descricao:str,valor:float)->str:
+    def create(nome:str,descricao:str,valor:float)->str:
         ("Utilizado para adcionar os dados dos Servicos ao banco de dados")
 
         #Abre a conexão com o banco de dados
@@ -353,14 +372,14 @@ class Servicos:
 
         #Tenta inserir os valores no banco de dados e retorna informação que o Servico foi cadastrado
         try:
-            cursor.execute("INSERT INTO Servicos (tipo,descricao,valor) VALUES (?, ?, ?)", (tipo,descricao,valor))
+            cursor.execute("INSERT INTO Servicos (nome,descricao,valor) VALUES (?, ?, ?)", (nome,descricao,valor))
             conn.commit()
-            return f"Servico {tipo} foi cadastrado com sucesso"
+            return f"Servico {nome} foi cadastrado com sucesso"
 
         #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
         except Exception as e:
             conn.rollback()
-            return f"Erro ao adicionar Endereco \nErro: {e}"
+            return f"Erro ao adicionar Servico \nErro: {e}"
 
         #Finaliza com o fechamento da conexão com o banco de dados
         finally:
@@ -375,7 +394,7 @@ class Servicos:
 
         #Tenta ler os dados do Servico no banco de dados usando a ID fornecida, e retorna os dados como obejto
         try:
-            cursor.execute("SELECT tipo,descricao,valor FROM Servicos WHERE idServicos=?", (str(id)))
+            cursor.execute("SELECT nome,descricao,valor FROM Servicos WHERE idServicos=?", (str(id)))
             dados=cursor.fetchone()
             servico_dados=Servicos(id,dados[0],dados[1],dados[2])
             return servico_dados
@@ -389,7 +408,7 @@ class Servicos:
         finally:
             conn.close()
 
-    def update(id:int,tipo:str,descricao:str,valor:str):
+    def update(id:int,nome:str,descricao:str,valor:str):
         ("Usado para atualizar um Servico no banco de dados.\n\n"
         "Selecione a ID do servico que será atualizado.\n\n"
         'Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados\n\n'
@@ -402,8 +421,8 @@ class Servicos:
         #Faz as alterações no Obejto temp se os campos não estiverem vazios na função
         #Se os campos estiverem "" não haverá mudanças e os valores permaneceram o mesmo de quando recuperados
         # pelo banco d dados
-        if tipo!="":
-            temp.tipo=tipo
+        if nome!="":
+            temp.nome=nome
         if descricao!="":
             temp.descricao=descricao
         if valor!="":
@@ -417,7 +436,7 @@ class Servicos:
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
         try:
-            cursor.execute("UPDATE Servicos SET tipo=?, descricao=?, valor=? WHERE idServicos=?", (temp.tipo,temp.descricao,temp.valor,id))
+            cursor.execute("UPDATE Servicos SET nome=?, descricao=?, valor=? WHERE idServicos=?", (temp.nome,temp.descricao,temp.valor,id))
             conn.commit()
             return f"Servico Atualizado com sucesso"
         
@@ -431,7 +450,7 @@ class Servicos:
             conn.close()
 
     def delete(id: int) -> str:
-        """Utilizado para deletar do banco de dados os dados do Endereco usado ID do cliente selecionado"""
+        """Utilizado para deletar do banco de dados os dados do Servico usando a ID selecionada"""
 
         #Inicia conexão com o banco de dados
         conn = sqlite3.connect('database.db')
@@ -452,7 +471,7 @@ class Servicos:
         finally:
             conn.close()
 
-class Produtos:
+class Produto:
     def __init__(self,id:int,nome:str,descricao:str,valor:float):
         self.id=id
         self.nome=nome
@@ -460,7 +479,7 @@ class Produtos:
         self.valor=valor
 
     def create(nome:str,descricao:str,valor:float):
-        ("Utilizado para adcionar os dados dos Produtos ao banco de dados")
+        ("Utilizado para adcionar os dados dos Produto ao banco de dados")
 
         #Abre a conexão com o banco de dados
         conn = sqlite3.connect('database.db')
@@ -468,14 +487,14 @@ class Produtos:
 
         #Tenta inserir os valores no banco de dados e retorna informação que o Produto foi cadastrado
         try:
-            cursor.execute("INSERT INTO Produtos (nome,descricao,valor) VALUES (?, ?, ?)", (nome,descricao,valor))
+            cursor.execute("INSERT INTO Produto (nome,descricao,valor) VALUES (?, ?, ?)", (nome,descricao,valor))
             conn.commit()
             return f"Produto {nome} foi cadastrado com sucesso"
 
         #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
         except Exception as e:
             conn.rollback()
-            return f"Erro ao adicionar Endereco \nErro: {e}"
+            return f"Erro ao adicionar Produto \nErro: {e}"
 
         #Finaliza com o fechamento da conexão com o banco de dados
         finally:
@@ -490,9 +509,9 @@ class Produtos:
 
         #Tenta ler os dados do Produto no banco de dados usando a ID fornecida, e retorna os dados como obejto
         try:
-            cursor.execute("SELECT nome,descricao,valor FROM Produtos WHERE idProdutos=?", (str(id)))
+            cursor.execute("SELECT nome,descricao,valor FROM Produto WHERE idProduto=?", (str(id)))
             dados=cursor.fetchone()
-            produto_dados=Produtos(id,dados[0],dados[1],dados[2])
+            produto_dados=Produto(id,dados[0],dados[1],dados[2])
             return produto_dados
 
         #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
@@ -508,11 +527,11 @@ class Produtos:
         ("Usado para atualizar um Produto no banco de dados.\n\n"
         "Selecione a ID do Produto que será atualizado.\n\n"
         'Utilize "" para os campos que não serão alterados e use string para os campos a serem alterados\n\n'
-        'EX: Produtos.update( "Cadeira", "" , "15.00" , 3)\n\n'
+        'EX: Produto.update( "Cadeira", "" , "15.00" , 3)\n\n'
         'No exemplo apenas os campos de Nome e Valor serão alterados no Produto de ID 3 ')
 
         #Busca as informações atuais do Servico no banco de dados e salva como objeto temp
-        temp=Produtos.read(id)
+        temp=Produto.read(id)
 
         #Faz as alterações no Obejto temp se os campos não estiverem vazios na função
         #Se os campos estiverem "" não haverá mudanças e os valores permaneceram o mesmo de quando recuperados
@@ -532,7 +551,7 @@ class Produtos:
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
         try:
-            cursor.execute("UPDATE Produtos SET nome=?, descricao=?, valor=? WHERE idProdutos=?", (temp.nome,temp.descricao,temp.valor,id))
+            cursor.execute("UPDATE Produto SET nome=?, descricao=?, valor=? WHERE idProduto=?", (temp.nome,temp.descricao,temp.valor,id))
             conn.commit()
             return f"Produto Atualizado com sucesso"
         
@@ -554,7 +573,7 @@ class Produtos:
 
         #Tenta deletar as informação do Produto com a ID fornecida e retornando str de sucesso
         try:
-            cursor.execute("DELETE FROM Produtos WHERE idProdutos=?", (str(id)))
+            cursor.execute("DELETE FROM Produto WHERE idProduto=?", (str(id)))
             conn.commit()
             return f"Produto {id}: foi deletado com sucesso"
 
@@ -566,7 +585,7 @@ class Produtos:
         #Finaliza com o encerramento da conexão com o banco de dadosa
         finally:
             conn.close()
-
+        
 class Carrinho:
     def __init__(self,id:int,idCliente:int,total:float,status:bool):
         self.id=id
@@ -603,7 +622,7 @@ class Carrinho:
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
-        #Tenta ler os dados do Endereco no banco de dados usando a ID fornecida, e retorna os dados como obejto 'endereco_dados'
+        #Tenta ler os dados do Carrinho no banco de dados usando a ID fornecida, e retorna os dados como obejto
         try:
             cursor.execute("SELECT idCarrinho,idCliente,total,status FROM carrinho WHERE idCarrinho=?", (str(id)))
             dados=cursor.fetchone()
@@ -652,7 +671,7 @@ class Carrinho:
         # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
         except Exception as e:
             conn.rollback()
-            return f"Erro ao atualizar Endereco no banco de dados\nErro: {e}"
+            return f"Erro ao atualizar o Carrinho no banco de dados\nErro: {e}"
 
         #Finaliza com o encerramento da conexão com o banco de dados
         finally:
@@ -679,3 +698,100 @@ class Carrinho:
         #Finaliza com o encerramento da conexão com o banco de dadosa
         finally:
             conn.close()
+
+class Produto_carrinho:
+    def __init__(self,idCarrinho:int,idProduto:int,quantidade:int):
+        self.idCarrinho=idCarrinho
+        self.idProduto=idProduto
+        self.quantidade=quantidade
+
+    def create(idCarrinho:int,idProduto:int,quantidade:int)->str:
+        ("Utilizado para adicionar Produtos pela sua ID e a quantidade a ser colocada em um Carrinho")
+
+        #Abre a conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta as indformações no banco de dados e retorna informação que o Produto foi adicionado ao Carrinho
+        try:
+            cursor.execute("INSERT INTO Produto_Carrinho (idCarrinho,idProduto,quantidade) VALUES (?,?,?)", (idCarrinho,idProduto,quantidade))
+            conn.commit()
+            return f"Produto Adicionado com sucesso ao Carrinho {idCarrinho}"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao adicionar Produto ao carrinho\nErro: {e}"
+
+        #Finaliza com o fechamento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def read(idCarrinho:int)->object:
+        ("Usando a ID irá retornar os Produtos e quantidade do Carrinho ")
+
+        #Conecta ao banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta ler os dados da tabela Produto_carrinho no banco de dados usando a ID fornecida, e retorna os dados
+        try:
+            cursor.execute("SELECT * FROM Produto_Carrinho WHERE idCarrinho=?", (str(idCarrinho)))
+            dados=cursor.fetchall()
+            
+            return dados
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao selecionar no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def update(idCarrinho:int,idProduto:int,quantidade:int):
+        ("Usado para modificar a quantidade de um produto em um carrinho")
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta atualizar a quantidade de itens no banco de dados utilizando as informações fornecidas,
+        # retornando a informação se foi bem sucedido
+        try:
+            cursor.execute("UPDATE Produto_Carrinho SET quantidade=? WHERE idCarrinho=? AND idProduto=?", (quantidade,idCarrinho,idProduto))
+            conn.commit()
+            return f"Carrinho atualizado com sucesso"
+        
+        # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao atualizar Quantidade de produtos no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def delete(idCarrinho:int,idProduto:int) -> str:
+        """Utilizado para deletar do banco de dados o Produto fornecido pela ID de um Carrinho com a ID Fornecida"""
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta deletar as informação do carrinho com a ID fornecida e retornando str de sucesso
+        try:
+            cursor.execute("DELETE FROM Produto_Carrinho WHERE idCarrinho=? AND idProduto=?", (idCarrinho,idProduto))
+            conn.commit()
+            return f"Produto {idProduto} foi deletado com sucesso do Carrinho {idCarrinho}"
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao Deletar Produto {idProduto} do Carrinho {idCarrinho} \nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
+        finally:
+            conn.close()
+
