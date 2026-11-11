@@ -795,3 +795,101 @@ class Produto_carrinho:
         finally:
             conn.close()
 
+
+class Servico_carrinho:
+    def __init__(self,idCarrinho:int,idServico:int,quantidade:int):
+        self.idCarrinho=idCarrinho
+        self.idServico=idServico
+        self.quantidade=quantidade
+
+    def create(idCarrinho:int,idServico:int,quantidade:int)->str:
+        ("Utilizado para adicionar Servicos pela sua ID e a quantidade a ser colocada em um Carrinho")
+
+        #Abre a conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta as informações no banco de dados e retorna informação que o Servico foi adicionado ao Carrinho
+        try:
+            cursor.execute("INSERT INTO Servico_Carrinho (idCarrinho,idServicos,quantidade) VALUES (?,?,?)", (idCarrinho,idServico,quantidade))
+            conn.commit()
+            return f"Servico adicionado com sucesso ao Carrinho {idCarrinho}"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao adicionar Servico ao carrinho\nErro: {e}"
+
+        #Finaliza com o fechamento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def read(idCarrinho:int)->object:
+        ("Usando a ID irá retornar os Servicos e quantidade do Carrinho ")
+
+        #Conecta ao banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta ler os dados da tabela Servico_carrinho no banco de dados usando a ID fornecida, e retorna os dados
+        try:
+            cursor.execute("SELECT * FROM Servico_Carrinho WHERE idCarrinho=?", (str(idCarrinho)))
+            dados=cursor.fetchall()
+            
+            return dados
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao selecionar Servicos no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def update(idCarrinho:int,idServico:int,quantidade:int):
+        ("Usado para modificar a quantidade de um Servico em um carrinho")
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta atualizar a quantidade de Servicos no banco de dados utilizando as informações fornecidas,
+        # retornando a informação se foi bem sucedido
+        try:
+            cursor.execute("UPDATE Servico_Carrinho SET quantidade=? WHERE idCarrinho=? AND idServicos=?", (quantidade,idCarrinho,idServico))
+            conn.commit()
+            return f"Carrinho atualizado com sucesso"
+        
+        # Se houver algum erro será realizado um rollback e informado o erro que orcorreu
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao atualizar Quantidade de Servicos no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def delete(idCarrinho:int,idServico:int) -> str:
+        """Utilizado para deletar do banco de dados o Servico fornecido pela ID de um Carrinho com a ID Fornecida"""
+
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta deletar as informação do carrinho com a ID fornecida e retornando str de sucesso
+        try:
+            cursor.execute("DELETE FROM Servico_Carrinho WHERE idCarrinho=? AND idServicos=?", (idCarrinho,idServico))
+            conn.commit()
+            return f"Servico {idServico} foi deletado com sucesso do Carrinho {idCarrinho}"
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao Deletar Servico {idServico} do Carrinho {idCarrinho} \nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
+        finally:
+            conn.close()
+
+
