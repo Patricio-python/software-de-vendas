@@ -427,7 +427,6 @@ class Servicos:
             temp.descricao=descricao
         if valor!="":
             temp.valor=valor
-        
 
         #Inicia conexão com o banco de dados
         conn = sqlite3.connect('database.db')
@@ -542,7 +541,6 @@ class Produto:
             temp.descricao=descricao
         if valor!="":
             temp.valor=valor
-        
 
         #Inicia conexão com o banco de dados
         conn = sqlite3.connect('database.db')
@@ -795,7 +793,6 @@ class Produto_carrinho:
         finally:
             conn.close()
 
-
 class Servico_carrinho:
     def __init__(self,idCarrinho:int,idServico:int,quantidade:int):
         self.idCarrinho=idCarrinho
@@ -892,4 +889,87 @@ class Servico_carrinho:
         finally:
             conn.close()
 
+class Venda:
+    def __init__(self,id,data,idFuncionario,idCarrinho):
+        self.id=id
+        self.data=data
+        self.idFuncionario=idFuncionario
+        self.idCarrinho=idCarrinho
+
+    def create(idFuncionario:int,idCarrinho:int)->str:
+        ("Utilizado para criar uma venda atribuindo um carrinho com os itens e um funcionario que realizou a venda")
+
+        data=datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        #Abre a conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta as informações no banco de dados e retorna informação que a venda foi criada com sucesso
+        try:
+            cursor.execute("INSERT INTO Venda (data,idFuncionario,idCarrinho) VALUES (?,?,?)", (data,idFuncionario,idCarrinho))
+            conn.commit()
+            #Muda o Status do carrinho para 0 Fechando o carrinho 
+            Carrinho.update(idCarrinho,"",0)
+
+            return f"Venda criada com sucesso as {data}"
+
+        #Se falhar é realizado um rollback para segurança e retorna informação sobre o erro
+        except Exception as e:
+            conn.rollback()
+            return f"Erro ao cadastrar Venda \nErro: {e}"
+
+        #Finaliza com o fechamento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    def read(id:int)->object:
+        ("Usando a ID da venda irá retornar as informações da venda, podendo usar a ID do carrinho "
+        "para procurar os produtos e serviços inseridos nele")
+
+        #Conecta ao banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta ler os dados da vanda no banco de dados usando a ID fornecida, e retorna os dados como objeto
+        try:
+            cursor.execute("SELECT data,idFuncionario,idCarrinho FROM Venda WHERE idVenda=?", (str(id)))
+            dados=cursor.fetchone()
+            obj_venda=Venda(id,dados[0],dados[1],dados[2])
+            return obj_venda
+
+        #Em caso de erro realiza um rollback por segurança e retorna uma frase com erro
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao selecionar Servicos no banco de dados\nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dados
+        finally:
+            conn.close()
+
+    #Por sergurança não haverá função update. Upadte de uma venda mudará os itens no carrinho.
+    #Então convem deixar as informações de quem vendeu, e quando vendeu e qual carrinho associado.
+
+    def delete(id:int) -> str:
+        ("""Utilizado para deletar do banco de dados os dados de uma venda realizada. 
+        Realizar somente para deletar uma compra ja efetuada""")
+        
+        #Inicia conexão com o banco de dados
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        #Tenta deletar as informação da Venda com a ID fornecida e retornando str de sucesso
+        try:
+            cursor.execute("DELETE FROM Venda WHERE idVenda=?", (id,))
+            conn.commit()
+            return f"Venda {id} foi deletado com sucesso "
+
+        #Em caso de falha um rollback será realizado e uma str informa que ocorreu um erro e qual o erro                
+        except Exception as e:
+                conn.rollback()
+                return f"Erro ao Deletar Venda {id} no Banco de dados \nErro: {e}"
+
+        #Finaliza com o encerramento da conexão com o banco de dadosa
+        finally:
+            conn.close()
 
