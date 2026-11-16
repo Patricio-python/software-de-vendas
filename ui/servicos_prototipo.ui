@@ -918,10 +918,10 @@ border-radius: 10px;</string>
      <widget class="QPushButton" name="pushButton_8">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>170</x>
         <y>520</y>
-        <width>251</width>
-        <height>51</height>
+        <width>151</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -937,10 +937,10 @@ border-radius: 10px;</string>
      <widget class="QPushButton" name="pushButton_11">
       <property name="geometry">
        <rect>
-        <x>570</x>
+        <x>620</x>
         <y>520</y>
-        <width>251</width>
-        <height>51</height>
+        <width>151</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="styleSheet">
