@@ -167,7 +167,7 @@ Border-radius: 20px;</string>
 </string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLineEdit" name="lineEdit">
@@ -200,7 +200,7 @@ border-radius: 10px;</string>
         <x>30</x>
         <y>80</y>
         <width>371</width>
-        <height>451</height>
+        <height>471</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -379,50 +379,6 @@ border-radius: 10px;</string>
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidget_3">
-         <property name="styleSheet">
-          <string notr="true">background-color:#555;</string>
-         </property>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>60</number>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>ID</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Qtd</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Produto</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="styleSheet">
-          <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 10pt &quot;Arial&quot;;
-height: 30px;
-border-radius: 10px;</string>
-         </property>
-         <property name="text">
-          <string>Produtos</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QTableWidget" name="tableWidget_4">
          <property name="styleSheet">
           <string notr="true">background-color:#555;</string>
@@ -467,6 +423,50 @@ border-radius: 10px;</string>
           </property>
           <property name="textAlignment">
            <set>AlignCenter</set>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 10pt &quot;Arial&quot;;
+height: 30px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Produtos</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_3">
+         <property name="styleSheet">
+          <string notr="true">background-color:#555;</string>
+         </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>60</number>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>ID</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Qtd</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Produto</string>
           </property>
          </column>
         </widget>
@@ -599,12 +599,45 @@ border-radius: 10px;</string>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
-     <widget class="QLabel" name="label_4">
+     <widget class="QTableWidget" name="tableWidget_5">
       <property name="geometry">
        <rect>
-        <x>150</x>
-        <y>50</y>
-        <width>251</width>
+        <x>30</x>
+        <y>80</y>
+        <width>871</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>210</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Nome</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Sobrenome</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Telefone</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="pushButton_9">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>510</y>
+        <width>181</width>
         <height>61</height>
        </rect>
       </property>
@@ -615,7 +648,69 @@ height: 75px;
 border-radius: 10px;</string>
       </property>
       <property name="text">
-       <string>Clientes</string>
+       <string>🖨️</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_10">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>510</y>
+        <width>181</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 15pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Cadastrar Cliente</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>771</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 30pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Clientes Cadastrados</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_5">
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>80</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 30pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Cadastro de clientes</string>
       </property>
      </widget>
     </widget>
