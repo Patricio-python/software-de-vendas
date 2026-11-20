@@ -1302,7 +1302,7 @@ height: 75px;
 border-radius: 10px;</string>
       </property>
       <property name="text">
-       <string>Nome do serviço</string>
+       <string>Nome do Produto</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -1359,7 +1359,137 @@ border-radius: 10px;</string>
       </column>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_7"/>
+    <widget class="QWidget" name="page_7">
+     <widget class="QPushButton" name="pushButton_16">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>450</y>
+        <width>211</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 70pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>↩️</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_17">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>250</y>
+        <width>211</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 15pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>💾 Adicionar Produto</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>10</y>
+        <width>471</width>
+        <height>551</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLineEdit" name="lineEdit_14">
+         <property name="styleSheet">
+          <string notr="true">background-color:#555;
+font: 20pt &quot;Arial&quot;;
+border-radius: 10px;
+Border-style: solid;
+border-width: 2px;
+border-color:&quot;Goldenrod&quot;;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="placeholderText">
+          <string>Produto</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_15">
+         <property name="styleSheet">
+          <string notr="true">background-color:#555;
+font: 20pt &quot;Arial&quot;;
+border-radius: 10px;
+Border-style: solid;
+border-width: 2px;
+border-color:&quot;Goldenrod&quot;;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="placeholderText">
+          <string>Valor R$</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="plainTextEdit_4">
+         <property name="styleSheet">
+          <string notr="true">background-color:#555;
+font: 20pt &quot;Arial&quot;;
+border-radius: 10px;
+Border-style: solid;
+border-width: 2px;
+border-color:&quot;Goldenrod&quot;;</string>
+         </property>
+         <property name="placeholderText">
+          <string>Descrição do Produto</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLabel" name="label_16">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>40</y>
+        <width>371</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 20pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Cadastro de Produto</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
