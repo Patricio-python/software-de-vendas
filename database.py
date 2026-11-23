@@ -1,11 +1,24 @@
-import sqlite3
+from sqlcipher3 import dbapi2 as sqlite3
 import os
 
-db_filename = "database.db"  
+db_filename = "database.db"
+#Por segurança nunca deixe a chave de codificação no código
+#Estou deixando essa chave no código apenas para estudo 
+password="PRAGMA key = '20;!0j@On7in3~26';" 
+
+def reset():
+    
+    if os.path.exists(db_filename):
+        os.remove(db_filename)
+        create()
+        print(f"O banco de dados '{db_filename}' foi resetado com sucesso.")
+    else:
+        print(f"O arquivo '{db_filename}' não existe.")
 
 def create():
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()    
+    conn = sqlite3.connect(db_filename)
+    cursor = conn.cursor()
+    cursor.execute(password)
 
     try:
         # Ativa o suporte a chaves estrangeiras no SQLite
@@ -51,7 +64,7 @@ def create():
                 idCarrinho INTEGER PRIMARY KEY AUTOINCREMENT,
                 idCliente INTEGER NOT NULL,
                 total REAL NOT NULL DEFAULT 0.00,
-                status INTEGER NOT NULL DEFAULT 0,
+                status INTEGER NOT NULL DEFAULT 1,
                 FOREIGN KEY (idCliente) REFERENCES Cliente (idCliente) ON DELETE NO ACTION ON UPDATE NO ACTION
             );
         ''')
