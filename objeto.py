@@ -1,4 +1,6 @@
-import sqlite3
+import database as db
+from sqlcipher3 import dbapi2 as sqlite3
+from datetime import datetime
 
 class Cliente:
     def __init__(self,id:int,nome:str,sobrenome:str,cpf:str,telefone:str):
@@ -13,8 +15,9 @@ class Cliente:
         "banco de dados")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta inserir os valores no banco de dados e retorna informação que cliente foi cadastrado
         try:
@@ -35,8 +38,9 @@ class Cliente:
         ("Usando a ID de um cliente irá retornar os dados desse cliente como Objeto 'clt_dados' ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados do cliente no banco de dados usando a ID fornecida, e retorna os dados como obejto 'clt_dados'
         try:
@@ -77,8 +81,9 @@ class Cliente:
             temp.telefone=telefone
         
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação de que foi bem sucedido
@@ -99,8 +104,9 @@ class Cliente:
         """Utilizado para deletar do banco de dados os dados do cliente com a ID selecionada"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do cliente com a ID fornecida e retornando str de sucesso
         try:
@@ -131,9 +137,9 @@ class Endereco:
         ("Utilizado para adcionar os dados do endereço e vincular a um cliente pela ID do cliente")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
-
+        cursor.execute(db.password)
         #Tenta inserir os valores no banco de dados e retorna informação que o Endereco foi cadastrado
         try:
             cursor.execute("INSERT INTO Endereco (endereco,numero,complemento,bairro,cep,idCliente) VALUES (?, ?, ?, ?, ?, ?)", (endereco,numero,complemento,bairro,cep,idCliente))
@@ -153,8 +159,9 @@ class Endereco:
         ("Usando a ID de um cliente irá retornar os dados de endereco do cliente como Objeto 'endreco_dados' ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados do Endereco no banco de dados usando a ID fornecida, e retorna os dados como obejto 'endereco_dados'
         try:
@@ -197,8 +204,9 @@ class Endereco:
             temp.cep=cep
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
@@ -220,9 +228,9 @@ class Endereco:
         """Utilizado para deletar do banco de dados os dados do Endereco usado ID do cliente selecionado"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
-
+        cursor.execute(db.password)
         #Tenta deletar as informação do endereco do cliente com a ID fornecida e retornando str de sucesso
         try:
             cursor.execute("DELETE FROM Endereco WHERE idCliente=?", (str(id)))
@@ -250,8 +258,9 @@ class Funcionario:
         ("Utilizado para adcionar os dados do Funcionario")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta inserir os valores no banco de dados e retorna informação que o Funcionario foi cadastrado
         try:
@@ -272,8 +281,9 @@ class Funcionario:
         ("Usando a ID de um Funcionario irá retornar os dados do Funcionario")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados do Funcionario no banco de dados usando a ID fornecida, e retorna os dados como obejto 'Funcionario_dados'
         try:
@@ -315,8 +325,9 @@ class Funcionario:
             temp.senha=senha
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
@@ -338,8 +349,9 @@ class Funcionario:
         """Utilizado para deletar do banco de dados os dados do Funcionario usado ID selecionada"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do Funcionario com a ID fornecida e retornando str de sucesso
         try:
@@ -367,8 +379,9 @@ class Servicos:
         ("Utilizado para adcionar os dados dos Servicos ao banco de dados")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta inserir os valores no banco de dados e retorna informação que o Servico foi cadastrado
         try:
@@ -389,8 +402,9 @@ class Servicos:
         ("Usando a ID de um Servico irá retornar os dados do servico como Objeto ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados do Servico no banco de dados usando a ID fornecida, e retorna os dados como obejto
         try:
@@ -427,10 +441,12 @@ class Servicos:
             temp.descricao=descricao
         if valor!="":
             temp.valor=valor
+        
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
@@ -452,8 +468,9 @@ class Servicos:
         """Utilizado para deletar do banco de dados os dados do Servico usando a ID selecionada"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do Servico com a ID fornecida e retornando str de sucesso
         try:
@@ -481,8 +498,9 @@ class Produto:
         ("Utilizado para adcionar os dados dos Produto ao banco de dados")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta inserir os valores no banco de dados e retorna informação que o Produto foi cadastrado
         try:
@@ -503,8 +521,9 @@ class Produto:
         ("Usando a ID de um Produto irá retornar os dados do Produto como Objeto ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados do Produto no banco de dados usando a ID fornecida, e retorna os dados como obejto
         try:
@@ -541,10 +560,11 @@ class Produto:
             temp.descricao=descricao
         if valor!="":
             temp.valor=valor
-
+        
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
@@ -566,8 +586,9 @@ class Produto:
         """Utilizado para deletar do banco de dados os dados do Produto usando ID selecionada"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do Produto com a ID fornecida e retornando str de sucesso
         try:
@@ -595,8 +616,9 @@ class Carrinho:
         ("Utilizado para criar um carro e vincular a um cliente pela ID do cliente")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta inserir a ID no banco de dados e retorna informação que o Carrinho foi cadastrado
         try:
@@ -617,8 +639,9 @@ class Carrinho:
         ("Usando a ID irá retornar os dados de Carrinho como Objeto 'carrinho_dados' ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados do Carrinho no banco de dados usando a ID fornecida, e retorna os dados como obejto
         try:
@@ -656,8 +679,9 @@ class Carrinho:
             temp.status=status
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar o banco de dados com o Objeto temp utlizando a ID fornecida na função,
         # retornando a informação se foi bem sucedido
@@ -679,8 +703,9 @@ class Carrinho:
         """Utilizado para deletar do banco de dados os dados do Carrinho usando ID selecionada"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do carrinho com a ID fornecida e retornando str de sucesso
         try:
@@ -707,10 +732,11 @@ class Produto_carrinho:
         ("Utilizado para adicionar Produtos pela sua ID e a quantidade a ser colocada em um Carrinho")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
-        #Tenta as indformações no banco de dados e retorna informação que o Produto foi adicionado ao Carrinho
+        #Tenta as informações no banco de dados e retorna informação que o Produto foi adicionado ao Carrinho
         try:
             cursor.execute("INSERT INTO Produto_Carrinho (idCarrinho,idProduto,quantidade) VALUES (?,?,?)", (idCarrinho,idProduto,quantidade))
             conn.commit()
@@ -729,8 +755,9 @@ class Produto_carrinho:
         ("Usando a ID irá retornar os Produtos e quantidade do Carrinho ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados da tabela Produto_carrinho no banco de dados usando a ID fornecida, e retorna os dados
         try:
@@ -752,8 +779,9 @@ class Produto_carrinho:
         ("Usado para modificar a quantidade de um produto em um carrinho")
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar a quantidade de itens no banco de dados utilizando as informações fornecidas,
         # retornando a informação se foi bem sucedido
@@ -775,8 +803,9 @@ class Produto_carrinho:
         """Utilizado para deletar do banco de dados o Produto fornecido pela ID de um Carrinho com a ID Fornecida"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do carrinho com a ID fornecida e retornando str de sucesso
         try:
@@ -803,8 +832,10 @@ class Servico_carrinho:
         ("Utilizado para adicionar Servicos pela sua ID e a quantidade a ser colocada em um Carrinho")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
+
 
         #Tenta as informações no banco de dados e retorna informação que o Servico foi adicionado ao Carrinho
         try:
@@ -825,8 +856,9 @@ class Servico_carrinho:
         ("Usando a ID irá retornar os Servicos e quantidade do Carrinho ")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados da tabela Servico_carrinho no banco de dados usando a ID fornecida, e retorna os dados
         try:
@@ -848,8 +880,9 @@ class Servico_carrinho:
         ("Usado para modificar a quantidade de um Servico em um carrinho")
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta atualizar a quantidade de Servicos no banco de dados utilizando as informações fornecidas,
         # retornando a informação se foi bem sucedido
@@ -871,8 +904,9 @@ class Servico_carrinho:
         """Utilizado para deletar do banco de dados o Servico fornecido pela ID de um Carrinho com a ID Fornecida"""
 
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação do carrinho com a ID fornecida e retornando str de sucesso
         try:
@@ -902,8 +936,9 @@ class Venda:
         data=datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         #Abre a conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta as informações no banco de dados e retorna informação que a venda foi criada com sucesso
         try:
@@ -928,8 +963,9 @@ class Venda:
         "para procurar os produtos e serviços inseridos nele")
 
         #Conecta ao banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta ler os dados da vanda no banco de dados usando a ID fornecida, e retorna os dados como objeto
         try:
@@ -955,8 +991,9 @@ class Venda:
         Realizar somente para deletar uma compra ja efetuada""")
         
         #Inicia conexão com o banco de dados
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect(db.db_filename)
         cursor = conn.cursor()
+        cursor.execute(db.password)
 
         #Tenta deletar as informação da Venda com a ID fornecida e retornando str de sucesso
         try:
@@ -972,4 +1009,4 @@ class Venda:
         #Finaliza com o encerramento da conexão com o banco de dadosa
         finally:
             conn.close()
-
+            
