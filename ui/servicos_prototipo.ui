@@ -167,7 +167,7 @@ Border-radius: 20px;</string>
 </string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_8">
      <widget class="QLabel" name="label_19">
@@ -189,9 +189,8 @@ border-radius: 10px;</string>
       <property name="text">
        <string>Bem Vindo
 
-
-Funcionário: xxxxxxxx
-
+nome do funcionário
+função
 
 Data 00/00/2026</string>
       </property>
@@ -663,44 +662,6 @@ border-radius: 10px;</string>
        </property>
       </column>
      </widget>
-     <widget class="QPushButton" name="pushButton_9">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>510</y>
-        <width>181</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 30pt &quot;Arial&quot;;
-height: 75px;
-border-radius: 10px;</string>
-      </property>
-      <property name="text">
-       <string>🖨️</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_10">
-      <property name="geometry">
-       <rect>
-        <x>640</x>
-        <y>510</y>
-        <width>181</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 15pt &quot;Arial&quot;;
-height: 75px;
-border-radius: 10px;</string>
-      </property>
-      <property name="text">
-       <string>Cadastrar Cliente</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
@@ -722,6 +683,58 @@ border-radius: 10px;</string>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>500</y>
+        <width>871</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="pushButton_10">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 15pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Cadastrar Cliente</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_19">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 15pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;
+</string>
+         </property>
+         <property name="text">
+          <string>Alterar Cadastro</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_9">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 30pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>🖨️</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="page_5">
@@ -940,7 +953,7 @@ border-radius: 10px;</string>
           <set>Qt::AlignCenter</set>
          </property>
          <property name="placeholderText">
-          <string>Endereço</string>
+          <string>Logradouro: Rua, Avenida, etc...</string>
          </property>
         </widget>
        </item>
@@ -1030,25 +1043,6 @@ border-radius: 10px;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_12">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>540</y>
-        <width>271</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 20pt &quot;Arial&quot;;
-height: 75px;
-border-radius: 10px;</string>
-      </property>
-      <property name="text">
-       <string>Cadastrar Serviço</string>
-      </property>
-     </widget>
      <widget class="QPlainTextEdit" name="plainTextEdit">
       <property name="geometry">
        <rect>
@@ -1064,7 +1058,7 @@ font: 20pt &quot;Arial&quot;;
 border-radius: 10px;</string>
       </property>
       <property name="plainText">
-       <string>Desrição do Serviço</string>
+       <string>Descrição do Serviço</string>
       </property>
      </widget>
      <widget class="QTableWidget" name="tableWidget_6">
@@ -1120,6 +1114,44 @@ border-radius: 10px;</string>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>530</y>
+        <width>751</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pushButton_12">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 20pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Cadastrar Serviço</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_20">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 20pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Editar Serviço</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="page_6">
@@ -1203,12 +1235,12 @@ border-color:&quot;Goldenrod&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 15pt &quot;Arial&quot;;
+font: 35pt &quot;Arial&quot;;
 height: 75px;
 border-radius: 10px;</string>
       </property>
       <property name="text">
-       <string>💾 Adicionar Serviço</string>
+       <string>💾</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton_14">
@@ -1298,25 +1330,6 @@ border-radius: 10px;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_15">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>540</y>
-        <width>271</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 20pt &quot;Arial&quot;;
-height: 75px;
-border-radius: 10px;</string>
-      </property>
-      <property name="text">
-       <string>Cadastrar Produto</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
@@ -1389,6 +1402,44 @@ border-radius: 10px;</string>
        </property>
       </column>
      </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>530</y>
+        <width>751</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QPushButton" name="pushButton_15">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 20pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Cadastrar Produto</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_21">
+         <property name="styleSheet">
+          <string notr="true">background-color:&quot;Goldenrod&quot;;
+font: 20pt &quot;Arial&quot;;
+height: 75px;
+border-radius: 10px;</string>
+         </property>
+         <property name="text">
+          <string>AtualizarProduto</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_7">
      <widget class="QPushButton" name="pushButton_16">
@@ -1421,12 +1472,12 @@ border-radius: 10px;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color:&quot;Goldenrod&quot;;
-font: 15pt &quot;Arial&quot;;
+font: 35pt &quot;Arial&quot;;
 height: 75px;
 border-radius: 10px;</string>
       </property>
       <property name="text">
-       <string>💾 Adicionar Produto</string>
+       <string>💾</string>
       </property>
      </widget>
      <widget class="QWidget" name="verticalLayoutWidget_5">
