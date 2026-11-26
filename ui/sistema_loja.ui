@@ -1,0 +1,1773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1100</width>
+    <height>680</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1920</width>
+    <height>1080</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Sistema de Gestão - Produtos e Serviços</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Fundo Geral */
+QMainWindow, QWidget#centralwidget {
+    background-color: #18181B;
+    color: #F4F4F5;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+}
+
+/* Painel Principal (StackedWidget) */
+QStackedWidget#hud {
+    background-color: #27272A;
+    border-radius: 12px;
+    border: 1px solid #3F3F46;
+}
+
+QStackedWidget#hud &gt; QWidget {
+    background-color: transparent;
+}
+
+/* Botões Padrão (Menu Lateral e Secundários) */
+QPushButton {
+    background-color: #3F3F46;
+    color: #F4F4F5;
+    font-size: 14pt;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 12px 18px;
+    border: 1px solid #52525B;
+}
+
+QPushButton:hover {
+    background-color: #52525B;
+    border-color: #EAB308;
+}
+
+QPushButton:pressed {
+    background-color: #27272A;
+}
+
+/* Botões de Ação Principal (Dourado/Âmbar) */
+QPushButton#pushButton_5, QPushButton#pushButton_10, 
+QPushButton#pushButton_11, QPushButton#pushButton_12, 
+QPushButton#pushButton_13, QPushButton#pushButton_15, 
+QPushButton#pushButton_17 {
+    background-color: #EAB308;
+    color: #18181B;
+    border: none;
+}
+
+QPushButton#pushButton_5:hover, QPushButton#pushButton_10:hover,
+QPushButton#pushButton_11:hover, QPushButton#pushButton_12:hover,
+QPushButton#pushButton_13:hover, QPushButton#pushButton_15:hover,
+QPushButton#pushButton_17:hover {
+    background-color: #FACC15;
+}
+
+/* Botão Finalizar Compra (Verde Destaque) */
+QPushButton#pushButton_7 {
+    background-color: #16A34A;
+    color: #FFFFFF;
+    font-size: 14pt;
+    border: none;
+}
+
+QPushButton#pushButton_7:hover {
+    background-color: #22C55E;
+}
+
+/* Botão Remover (Alerta Sutil) */
+QPushButton#pushButton_6:hover {
+    border-color: #EF4444;
+    color: #FCA5A5;
+}
+
+/* Campos de Texto e Inputs */
+QLineEdit, QPlainTextEdit, QSpinBox {
+    background-color: #18181B;
+    color: #F4F4F5;
+    font-size: 13pt;
+    border: 1px solid #52525B;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+QLineEdit:focus, QPlainTextEdit:focus, QSpinBox:focus {
+    border: 2px solid #EAB308;
+}
+
+/* Tabelas */
+QTableWidget {
+    background-color: #18181B;
+    alternate-background-color: #222226;
+    color: #F4F4F5;
+    gridline-color: #3F3F46;
+    font-size: 12pt;
+    border-radius: 8px;
+    border: 1px solid #3F3F46;
+    selection-background-color: #EAB308;
+    selection-color: #18181B;
+}
+
+QHeaderView::section {
+    background-color: #3F3F46;
+    color: #EAB308;
+    font-weight: bold;
+    font-size: 12pt;
+    padding: 8px;
+    border: none;
+}
+
+/* Labels Gerais */
+QLabel {
+    color: #F4F4F5;
+    font-size: 13pt;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="mainHorizontalLayout">
+    <property name="spacing">
+     <number>20</number>
+    </property>
+    <property name="leftMargin">
+     <number>20</number>
+    </property>
+    <property name="topMargin">
+     <number>20</number>
+    </property>
+    <property name="rightMargin">
+     <number>20</number>
+    </property>
+    <property name="bottomMargin">
+     <number>20</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="sidebarLayout">
+      <property name="spacing">
+       <number>15</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>230</width>
+          <height>90</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #27272A;
+color: #EAB308;
+font-size: 22pt;
+font-weight: bold;
+border: 2px solid #EAB308;
+border-radius: 12px;</string>
+        </property>
+        <property name="text">
+         <string>LOGO</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_top">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>15</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Vendas</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Clientes</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Produtos</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="minimumSize">
+         <size>
+          <width>210</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string>Serviços</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_bottom">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="styleSheet">
+       <string notr="true">background-color: #3F3F46;</string>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="contentAreaLayout">
+      <property name="spacing">
+       <number>15</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #EAB308;
+font-size: 20pt;
+font-weight: bold;
+background-color: #27272A;
+border-radius: 10px;
+padding: 10px;</string>
+        </property>
+        <property name="text">
+         <string>Produtos e Serviços (Nome do Estabelecimento)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="hud">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="page_8">
+         <layout class="QVBoxLayout" name="verticalLayout_welcome">
+          <property name="leftMargin">
+           <number>40</number>
+          </property>
+          <property name="topMargin">
+           <number>40</number>
+          </property>
+          <property name="rightMargin">
+           <number>40</number>
+          </property>
+          <property name="bottomMargin">
+           <number>40</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_19">
+            <property name="styleSheet">
+             <string notr="true">background-color: #18181B;
+color: #EAB308;
+font-size: 28pt;
+font-weight: bold;
+border-radius: 12px;
+border: 1px solid #3F3F46;</string>
+            </property>
+            <property name="text">
+             <string>Bem-vindo!
+
+Nome do Funcionário
+Função
+
+Data: 00/00/2026</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page">
+         <layout class="QHBoxLayout" name="horizontalLayout_vendas" stretch="4,1,4">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="lineEdit">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>🔍 Procurar Cliente (Nome ou CPF)...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="styleSheet">
+               <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-weight: bold;
+padding: 6px;
+border-radius: 6px;</string>
+              </property>
+              <property name="text">
+               <string>Catálogo de Serviços</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="tableWidget">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>70</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Serviço</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="styleSheet">
+               <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-weight: bold;
+padding: 6px;
+border-radius: 6px;</string>
+              </property>
+              <property name="text">
+               <string>Catálogo de Produtos</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="tableWidget_2">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>70</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Produto</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_controles_venda">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <spacer name="verticalSpacer_v1">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_qtd">
+              <property name="styleSheet">
+               <string notr="true">font-size: 11pt; color: #A1A1AA;</string>
+              </property>
+              <property name="text">
+               <string>Quantidade</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinBox">
+              <property name="minimumSize">
+               <size>
+                <width>110</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font-size: 18pt; font-weight: bold;</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_5">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string> Add ➔</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_6">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>⬅Tirar</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_v2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_carrinho_titulo">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>45</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: #EAB308;
+color: #18181B;
+font-size: 15pt;
+font-weight: bold;
+border-radius: 8px;</string>
+              </property>
+              <property name="text">
+               <string>🛒 Carrinho</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="styleSheet">
+               <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-weight: bold;
+padding: 6px;
+border-radius: 6px;</string>
+              </property>
+              <property name="text">
+               <string>Serviços Selecionados</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="tableWidget_4">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>60</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Qtd</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Serviço</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_9">
+              <property name="styleSheet">
+               <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-weight: bold;
+padding: 6px;
+border-radius: 6px;</string>
+              </property>
+              <property name="text">
+               <string>Produtos Selecionados</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="tableWidget_3">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>60</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Qtd</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Produto</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QLabel" name="label_10">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #3F3F46;
+color: #F4F4F5;
+font-size: 15pt;
+font-weight: bold;
+border-radius: 8px;</string>
+                </property>
+                <property name="text">
+                 <string>Total:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_11">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #18181B;
+color: #22C55E;
+font-size: 18pt;
+font-weight: bold;
+border: 1px solid #3F3F46;
+border-radius: 8px;</string>
+                </property>
+                <property name="text">
+                 <string>R$ 00,00</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_7">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>✓ Finalizar Compra</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_2">
+         <layout class="QVBoxLayout" name="verticalLayout_clientes">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>25</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>25</number>
+          </property>
+          <property name="bottomMargin">
+           <number>25</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-size: 18pt;
+font-weight: bold;
+border-radius: 8px;</string>
+            </property>
+            <property name="text">
+             <string>Clientes Cadastrados</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidget_5">
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>200</number>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>ID</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Nome</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Sobrenome</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Telefone</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_10">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>+ Cadastrar Cliente</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_19">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>✎ Alterar Cadastro</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_9">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>🖨️ Imprimir Lista</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_5">
+         <layout class="QVBoxLayout" name="verticalLayout_cad_cliente">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
+          <property name="bottomMargin">
+           <number>25</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-size: 18pt;
+font-weight: bold;
+border-radius: 8px;</string>
+            </property>
+            <property name="text">
+             <string>Cadastrar Cliente</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item row="0" column="0" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Nome</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_4">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Sobrenome</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLineEdit" name="lineEdit_6">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Telefone (Ex: (91) 99999-9999)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineEdit_5">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>CPF (Ex: 000.000.000-00)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line_2">
+            <property name="styleSheet">
+             <string notr="true">background-color: #3F3F46;</string>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item row="0" column="0" colspan="2">
+             <widget class="QLineEdit" name="lineEdit_7">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Logradouro (Rua, Avenida, Travessa...)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLineEdit" name="lineEdit_8">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Número</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineEdit_9">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Complemento (Apto, Bloco, Casa...)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLineEdit" name="lineEdit_10">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Bairro</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineEdit_11">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>CEP</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_cad_cli">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_cad_cli_btns">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_8">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>↩ Voltar</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_11">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>💾 Salvar Cliente</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_3">
+         <layout class="QVBoxLayout" name="verticalLayout_servicos_main">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>25</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>25</number>
+          </property>
+          <property name="bottomMargin">
+           <number>25</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_servicos_split" stretch="5,4">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <widget class="QTableWidget" name="tableWidget_6">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>75</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Serviço</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_servico_detalhes">
+              <property name="spacing">
+               <number>12</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-size: 16pt;
+font-weight: bold;
+border-radius: 8px;</string>
+                </property>
+                <property name="text">
+                 <string>Nome do Serviço</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPlainTextEdit" name="plainTextEdit">
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+                <property name="plainText">
+                 <string>Descrição do Serviço</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_valor_serv">
+                <item>
+                 <widget class="QLabel" name="label_14">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #3F3F46;
+color: #F4F4F5;
+font-size: 15pt;
+font-weight: bold;
+border-radius: 8px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Valor R$:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_15">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #18181B;
+color: #EAB308;
+font-size: 18pt;
+font-weight: bold;
+border: 1px solid #3F3F46;
+border-radius: 8px;</string>
+                  </property>
+                  <property name="text">
+                   <string>20,00</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_12">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>+ Cadastrar Serviço</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_20">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>✎ Editar Serviço</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_6">
+         <layout class="QVBoxLayout" name="verticalLayout_cad_servico">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
+          <property name="bottomMargin">
+           <number>25</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_13">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-size: 18pt;
+font-weight: bold;
+border-radius: 8px;</string>
+            </property>
+            <property name="text">
+             <string>Cadastro de Serviços</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_12">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Nome do Serviço</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_13">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Valor R$ (Ex: 50,00)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPlainTextEdit" name="plainTextEdit_2">
+              <property name="placeholderText">
+               <string>Descrição detalhada do serviço...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_cad_serv_btns">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_14">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>↩ Voltar</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_13">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>💾 Salvar Serviço</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_4">
+         <layout class="QVBoxLayout" name="verticalLayout_produtos_main">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>25</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>25</number>
+          </property>
+          <property name="bottomMargin">
+           <number>25</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_produtos_split" stretch="5,4">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <widget class="QTableWidget" name="tableWidget_7">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <attribute name="horizontalHeaderDefaultSectionSize">
+               <number>75</number>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>ID</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Produto</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_produto_detalhes">
+              <property name="spacing">
+               <number>12</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_6">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-size: 16pt;
+font-weight: bold;
+border-radius: 8px;</string>
+                </property>
+                <property name="text">
+                 <string>Nome do Produto</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPlainTextEdit" name="plainTextEdit_3">
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+                <property name="plainText">
+                 <string>Descrição do Produto</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_valor_prod">
+                <item>
+                 <widget class="QLabel" name="label_17">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #3F3F46;
+color: #F4F4F5;
+font-size: 15pt;
+font-weight: bold;
+border-radius: 8px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Valor R$:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_18">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #18181B;
+color: #EAB308;
+font-size: 18pt;
+font-weight: bold;
+border: 1px solid #3F3F46;
+border-radius: 8px;</string>
+                  </property>
+                  <property name="text">
+                   <string>20,00</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_15">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>+ Cadastrar Produto</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_21">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>✎ Atualizar Produto</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_7">
+         <layout class="QVBoxLayout" name="verticalLayout_cad_produto">
+          <property name="spacing">
+           <number>15</number>
+          </property>
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>25</number>
+          </property>
+          <property name="rightMargin">
+           <number>30</number>
+          </property>
+          <property name="bottomMargin">
+           <number>25</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: #3F3F46;
+color: #EAB308;
+font-size: 18pt;
+font-weight: bold;
+border-radius: 8px;</string>
+            </property>
+            <property name="text">
+             <string>Cadastro de Produto</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_14">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Nome do Produto</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_15">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>48</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Valor R$ (Ex: 35,00)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPlainTextEdit" name="plainTextEdit_4">
+              <property name="placeholderText">
+               <string>Descrição detalhada do produto...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_cad_prod_btns">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_16">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>↩ Voltar</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_17">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>55</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>💾 Salvar Produto</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
